@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Work Order Given Below..</h1>
+<br>
+<div class="shadow p-4 mb-5 bg-body rounded">
+  <div class="card my-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ work.wo_number }}
+      </h5>
+      <h6 class="card-subtitle mb-2 text-muted">in {{ work.company_name }} by <strong>Dated on {{ work.wo_date }} and
+          should to complete before {{ work.comp_date }}</strong> by {{ work.person_name }}</h6>
+      <p class="card-text">
+        <li>Details :
+          <ul>
+            <li>Billing Address : {{ work.billing_address }}</li>
+            <li>Shipping Address : {{ work.shipping_address }}</li>
+            <li>Email Address : <a href="#" class="card-link">{{ work.email }}</a></li>
+            <li>Contact : {{ work.contact }}</li>
+          </ul>
+        </li>
+        <strong> Requirements : </strong>
+      <ul>
+        <ul>
+          <pre>{{ work.requirements }}</pre>
+
+        </ul>
+      </ul>
+      </p>
+      <!-- <a href="#" class="card-link">{{ event.venue.web }}</a> -->
+    </div>
+
+    <div class="card-footer text-muted">
+      {% if user.is_superuser %}
+      <strong>
+        <i>
+          Ordered by : {{ owner }}
+        </i>
+      </strong>
+                  {% if work.status == 'Completed' %}
+                    <a href="#" style="float:right;pointer-events: none;" class="btn btn-success"><strong>{{ work.status }}</strong>
+                    </a>
+                  {% elif work.status == 'Rejected' %}
+                    <span style="float: right;justify-content: center;">
+                      <a href="{% url 'unreject_order' work.id %}" class="btn btn-outline-success"><strong>Remove Rejection</strong> </a>
+                    </span>                  
+                  {% else %}
+                    <span style="float: right;">
+                      <a href="{% url 'reject_order' work.id %}#target" class="btn btn-outline-secondary"><strong>Reject</strong> </a>&nbsp;&nbsp;
+                      <a href="{% url 'make_bill' work.id %}#target" class="btn btn-outline-primary"><strong>Make Bills</strong> </a>
+                    </span>
+                  {% endif %}
+      {% else %}
+                  {% if work.status == 'Completed' %}
+                      <h4 class="btn-success" style="padding: 0.2rem 1rem;">Completed !!
+                        <span style="float:right">To Pay : {{ Bill.total_amount }}/- Rs</span>
+                      </h4>
+                  {% elif work.status == "Rejected" %}
+                  <strong style="color:red ;">
+                      Rejection Reason : {{ Reject.reason }}
+                      <span style="float:right">
+                        <a href="{% url 'update_order' work.id %}" class="btn btn-primary btn-sm">Update</a>
+                        <!-- for small buttons --> &nbsp;&nbsp;
+                        <a href="{% url 'delete_order' work.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        <!-- for small buttons  -->
+                      </span>            
+                  </strong>            
+                  {% else %}
+                    <a href="{% url 'update_order' work.id %}" class="btn btn-primary btn-sm">Update</a>
+                    <a href="{% url 'delete_order' work.id %}" style="float:right" class="btn btn-danger btn-sm">Delete</a>
+                  {% endif %}
+      {% endif %}
+    </div>
+    {% if user.is_superuser and work.status == "Rejected" %}
+    <div class="card-footer text-muted">
+        <strong style="color: red;">
+          Rejected By : {{ Rejected_by }}
+          <br>Reason : {{ Reject.reason }}
+        </strong>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

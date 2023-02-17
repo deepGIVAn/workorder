@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<center><h1>Update your Order Here..</h1></center>
+<br>
+<div class="shadow p-4 mb-5 bg-body rounded">
+{% if user.id == work.owner %}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save Changes" class="btn btn-primary" style="float: right;">
+    </form>
+<br><br>
+{% else %}
+    <h2>Access Denied</h2>
+    <p>Only the Owner of their Orders can update the Orders..</p>
+{% endif %}
+<br></div>
+{% endblock %}

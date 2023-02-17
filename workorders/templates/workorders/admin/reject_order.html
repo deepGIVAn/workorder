@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if submitted %}
+<center>
+  <br><br>
+  <span style="font-size: x-large;"> You have successfully rejected the order of <strong>{{ work.company_name }}</strong>.
+  </span><br><br>
+  <h5><i><a href="{% url 'admin_home' %}"> Go Back to Home </a></i></h5>
+</center>
+{% else %}
+<h1>Work Order Given Below..</h1>
+<br>
+<div class="card my-3">
+  <div class="card-body">
+    <h5 class="card-title">{{ work.wo_number }}
+    </h5>
+    <h6 class="card-subtitle mb-2 text-muted">in {{ work.company_name }} by <strong>Dated on {{ work.wo_date }} and
+        should to complete before {{ work.comp_date }}</strong> by {{ work.person_name }}</h6>
+    <p class="card-text">
+      <li>Details :
+        <ul>
+          <li>Billing Address : {{ work.billing_address }}</li>
+          <li>Shipping Address : {{ work.shipping_address }}</li>
+          <li>Email Address : <a href="#" class="card-link">{{ work.email }}</a></li>
+          <li>Contact : {{ work.contact }}</li>
+        </ul>
+      </li>
+      <strong> Requirements : </strong>
+    <ul>
+      <ul>
+        <pre>{{ work.requirements }}</pre>
+      </ul>
+    </ul>
+    </p>
+  </div>
+  <div class="card-footer text-muted">
+    {% if user.is_superuser %}
+    <strong>
+      <i>
+        Ordered by : {{ owner }}
+      </i>
+    </strong>
+
+    <span style="float: right;">
+        <a href="{% url 'reject_order' work.id %}#target" class="btn btn-outline-secondary disabled" aria-disabled="true"><strong>Reject</strong> </a>&nbsp;&nbsp;
+        <a href="{% url 'make_bill' work.id %}#target" class="btn btn-outline-primary disabled" aria-disabled="true"><strong>Make Bills</strong> </a>
+    </span>
+    
+    {% else %}
+    <a href="{% url 'update_order' work.id %}" class="btn btn-primary btn-sm">Update</a>
+    <a href="{% url 'delete_order' work.id %}" style="float:right" class="btn btn-danger btn-sm">Delete</a>
+    {% endif %}
+  </div>
+</div>
+
+<br><br>
+<div class="shadow p-4 mb-5 bg-body rounded">
+<h2>Rejecting here ..</h2>
+<br>
+<form action="" method="post">
+  {% csrf_token %}
+
+  {{ form.as_p }}
+
+  <input id="target" type="Submit" value="Reject" class="btn btn-danger">
+  <a style="float: right;" href="{% url 'show_order_admin' work.id %}"  class="btn btn-primary"><strong>Back</strong></a>
+</form>
+</div>
+{% endif %}
+{% endblock %}

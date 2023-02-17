@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<center><h2>Add Work Orders here ..</h2></center>
+<div class="shadow p-4 mb-5 bg-body rounded">
+  {% if submitted %}
+      <center><strong style="font-size: large;">You have successfully submitted your work order !!</strong>
+      <br><br><br>
+      <a href="{% url 'add_order' %}">Add Another Order</a></center>
+
+  {% else %}
+
+  <form method="POST" action="{% url 'add_order' %}">
+          {% csrf_token %}     <!-- cross side request forgery token okk! -->
+
+          {{ form.as_p }}        <!-- here we are actually getting the form structure through the form model -->
+
+        <br><br>
+        <input type="submit" class="btn btn-primary" value="Add Here">
+  </form>
+
+  {% endif %}
+</div>
+{% endblock %}

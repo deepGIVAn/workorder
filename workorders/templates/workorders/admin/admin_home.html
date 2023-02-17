@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<center>
+    <h1>Welcome! Admins, Now Check all the Orders..</h1>
+</center>
+<br><br>
+<div class="shadow p-4 mb-5 bg-body rounded">
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Work Order Number</th>
+            <th>Company Name</th>
+            <th>Order Date</th>
+            <th>Status</th>
+            <th style="text-align: right;"></th>
+        </tr>
+    </thead>
+    {% for work in work_orders %}
+    <tr>
+        <td>
+            <strong>{{ work.wo_number }}</strong>
+        </td>
+        <td>{{ work.company_name }}</td>
+        <td>{{ work.wo_date }}</td>
+        <td>
+            {% if work.status == "Pending" %}
+            <button class="btn btn-outline-danger btn-sm" style="cursor:default;width: 6rem;"><strong>{{ work.status }}</strong></button>
+            {% elif work.status == "Rejected" %}
+            <button class="btn btn-secondary btn-sm disabled" style="cursor:default;width: 6rem;" aria-disabled="true" ><strong>{{ work.status }}</strong></button>
+            {% else %}
+            <button class="btn btn-outline-success btn-sm" style="cursor:default;width: 6rem;"><strong>{{ work.status }}</strong></button>
+            {% endif %}
+        </td>
+        <td style="text-align: right;"><a href="{% url 'show_order_admin' work.id %}"
+                style="text-decoration: none;padding: 4px 9px;background-color: white;border-radius: 2rem;"> <strong>
+                    View</strong></a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br><br>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {% if work_orders.has_previous %}
+        <li class="page-item">
+            <a href="?page=1" class="page-link">&laquo; First</a>
+        </li>
+        <li class="page-item">
+            <a href="?page={{ work_orders.previous_page_number }}" class="page-link">Previous</a>
+        </li>
+        {% endif %}
+
+        {% for i in nums %}
+        <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+        {% endfor %}
+
+        {% if work_orders.has_next %}
+        <li class="page-item">
+            <a href="?page={{ work_orders.next_page_number }}" class="page-link">Next</a>
+        </li>
+        <li class="page-item">
+            <a href="?page={{ work_orders.paginator.num_pages }}" class="page-link">Last &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+<div style="margin: auto;width:13rem;">
+    <a href="{% url 'admin_download_order' %}" class="btn btn-outline-primary btn" style="text-decoration: none;">Download all Orders</a>
+</div>
+
+</div>
+{% endblock %}

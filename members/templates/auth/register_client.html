@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if form.errors %}
+<script>
+  function close_alert() {
+    document.getElementById("my_alert").close()
+  }
+  setTimeout("close_alert()", 2000)      // set timeout does not work in django don't know why ..
+</script>
+<div id="my_alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Fill it carefully and try again ..</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+<div class="shadow p-4 mb-5 bg-body rounded">
+
+  <h2>Registeration for Clients
+  <div style="float: right;"><a href="{% url 'login' %}">Go Login here</a></div></h2>
+  <form action="{% url 'register_client' %}" method="POST">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+    <!-- we can just simply hit 'form' so here we as_p means that p tag is added at the end of every file -->
+
+    <br>
+    <input type="submit" value="Register" class="btn btn-primary">
+</div>
+</form>
+
+{% endblock %}
