@@ -15,8 +15,8 @@ Admins
 For Registering as admin user need the secret key ( 76fb3134091e9b3 ) and without key, he/she cannot
 register as admin.
 
-Username Password
-deepak : deepak
+Username Password,  
+deepak : deepak,  
 akash : deepaksharma
 
 Admins can view or download all the orders on ‘Home’ putted by every clients. Status of every
@@ -27,8 +27,8 @@ see or download all the bills or later on that he/she can update or delete also.
 
 Clients
 
-Username Password
-suraj : deepaksharma
+Username Password,  
+suraj : deepaksharma,  
 nishu : deepaksharma
 
 Every Client can view or download only their orders on ‘Home’. Status of every order would be
